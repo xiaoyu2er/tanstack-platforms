@@ -23,15 +23,19 @@ export const Route = createFileRoute('/')({
   },
   head: (ctx) => {
     const subdomain = ctx.loaderData?.subdomain;
-    return {
-      meta: [
-        { title: `${subdomain}.${rootDomain}` },
-        {
-          name: 'description',
-          content: `Subdomain page for ${subdomain}.${rootDomain}`,
-        },
-      ],
-    };
+    if (subdomain) {
+      return {
+        meta: [
+          { title: `${subdomain}.${rootDomain}` },
+          {
+            name: 'description',
+            content: `Subdomain page for ${subdomain}.${rootDomain}`,
+          },
+        ],
+      };
+    } else {
+      return {};
+    }
   },
   component: IndexPage,
 });
