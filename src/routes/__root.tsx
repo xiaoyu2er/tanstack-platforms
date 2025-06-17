@@ -24,10 +24,10 @@ export const Route = createRootRouteWithContext<{
         name: 'viewport',
         content: 'width=device-width, initial-scale=1',
       },
-      { title: 'Platforms Starter Kit' },
+      { title: 'TanStack Start Multi-Tenant Template' },
       {
         name: 'description',
-        content: 'Next.js template for building a multi-tenant SaaS.',
+        content: 'TanStack Start template for building a multi-tenant SaaS with custom subdomains.',
       },
     ],
     links: [
