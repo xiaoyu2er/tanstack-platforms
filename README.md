@@ -2,6 +2,10 @@
 
 A production-ready example of a multi-tenant application built with TanStack Start, featuring custom subdomains for each tenant. This project is forked from Vercel's [Next.js platforms example](https://github.com/vercel/platforms) and converted to use TanStack Start.
 
+## 🚀 Live Demo
+
+Experience the multi-tenant functionality at [multi-domain.learnjs.eu.org](https://multi-domain.learnjs.eu.org) - hosted on Vercel!
+
 ## Features
 
 - ✅ Custom subdomain routing with TanStack Start
