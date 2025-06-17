@@ -1,4 +1,5 @@
 import { redis } from '@/lib/redis';
+import { createServerFn } from '@tanstack/react-start';
 
 export function isValidIcon(str: string) {
   if (str.length > 10) {
@@ -26,20 +27,31 @@ export function isValidIcon(str: string) {
   return str.length >= 1 && str.length <= 10;
 }
 
-type SubdomainData = {
+export type SubdomainData = {
   emoji: string;
   createdAt: number;
+  subdomain: string;
 };
 
-export async function getSubdomainData(subdomain: string) {
-  const sanitizedSubdomain = subdomain.toLowerCase().replace(/[^a-z0-9-]/g, '');
-  const data = await redis.get<SubdomainData>(
-    `subdomain:${sanitizedSubdomain}`
-  );
-  return data;
-}
+export const getSubdomainData = createServerFn()
+  .validator((subdomain: string) => subdomain)
+  .handler(async ({ data: subdomain }) => {
+    const sanitizedSubdomain = subdomain
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, '');
+    const data = await redis.get<SubdomainData>(
+      `subdomain:${sanitizedSubdomain}`
+    );
+    if (!data) return null;
 
-export async function getAllSubdomains() {
+    return {
+      ...data,
+      subdomain,
+    };
+  });
+
+export const getAllSubdomains = createServerFn().handler(async function () {
+  console.log('Fetching all subdomains from Redis');
   const keys = await redis.keys('subdomain:*');
 
   if (!keys.length) {
@@ -55,7 +67,7 @@ export async function getAllSubdomains() {
     return {
       subdomain,
       emoji: data?.emoji || '❓',
-      createdAt: data?.createdAt || Date.now()
+      createdAt: data?.createdAt || Date.now(),
     };
   });
-}
+});

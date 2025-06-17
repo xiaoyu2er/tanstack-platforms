@@ -1,34 +1,23 @@
-'use client';
-
-import type React from 'react';
-
-import { useState } from 'react';
-import { useActionState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+  EmojiPicker,
+  EmojiPickerContent,
+  EmojiPickerFooter,
+  EmojiPickerSearch,
+} from '@/components/ui/emoji-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
 } from '@/components/ui/popover';
-import { Smile } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import {
-  EmojiPicker,
-  EmojiPickerContent,
-  EmojiPickerSearch,
-  EmojiPickerFooter
-} from '@/components/ui/emoji-picker';
-import { createSubdomainAction } from '@/app/actions';
 import { rootDomain } from '@/lib/utils';
-
-type CreateState = {
-  error?: string;
-  success?: boolean;
-  subdomain?: string;
-  icon?: string;
-};
+import { createSubdomainAction } from '@/lib/actions';
+import { Smile } from 'lucide-react';
+import { useActionState, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
 function SubdomainInput({ defaultValue }: { defaultValue?: string }) {
   return (
@@ -56,7 +45,7 @@ function SubdomainInput({ defaultValue }: { defaultValue?: string }) {
 function IconPicker({
   icon,
   setIcon,
-  defaultValue
+  defaultValue,
 }: {
   icon: string;
   setIcon: (icon: string) => void;
@@ -126,21 +115,29 @@ function IconPicker({
 
 export function SubdomainForm() {
   const [icon, setIcon] = useState('');
-
-  const [state, action, isPending] = useActionState<CreateState, FormData>(
-    createSubdomainAction,
-    {}
-  );
+  const { data, mutateAsync, isPending } = useMutation({
+    mutationFn: (form: FormData) => createSubdomainAction({ data: form }),
+    onSuccess(data) {
+      if (data.next) {
+        window.location.href = data.next;
+      }
+    },
+  });
 
   return (
-    <form action={action} className="space-y-4">
-      <SubdomainInput defaultValue={state?.subdomain} />
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        await mutateAsync(formData);
+      }}
+      className="space-y-4"
+    >
+      <SubdomainInput />
 
-      <IconPicker icon={icon} setIcon={setIcon} defaultValue={state?.icon} />
+      <IconPicker icon={icon} setIcon={setIcon} />
 
-      {state?.error && (
-        <div className="text-sm text-red-500">{state.error}</div>
-      )}
+      {data?.error && <div className="text-sm text-red-500">{data.error}</div>}
 
       <Button type="submit" className="w-full" disabled={isPending || !icon}>
         {isPending ? 'Creating...' : 'Create Subdomain'}
