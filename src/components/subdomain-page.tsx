@@ -1,6 +1,7 @@
 import { SubdomainData } from '@/lib/subdomains';
 import { protocol, rootDomain } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
+import { GitHubLink } from './github-link';
 
 export function SubdomainPage({
   subdomainData,
@@ -9,6 +10,9 @@ export function SubdomainPage({
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-white p-4">
+      <div className="absolute top-4 left-4">
+        <GitHubLink />
+      </div>
       <div className="absolute top-4 right-4">
         <Link
           // @ts-ignore
