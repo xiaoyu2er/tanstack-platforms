@@ -1,10 +1,10 @@
-# Next.js Multi-Tenant Example
+# TanStack Start Multi-Tenant Example
 
-A production-ready example of a multi-tenant application built with Next.js 15, featuring custom subdomains for each tenant.
+A production-ready example of a multi-tenant application built with TanStack Start, featuring custom subdomains for each tenant. This project is forked from Vercel's [Next.js platforms example](https://github.com/vercel/platforms) and converted to use TanStack Start.
 
 ## Features
 
-- ✅ Custom subdomain routing with Next.js middleware
+- ✅ Custom subdomain routing with TanStack Start
 - ✅ Tenant-specific content and pages
 - ✅ Shared components and layouts across tenants
 - ✅ Redis for tenant data storage
@@ -15,7 +15,7 @@ A production-ready example of a multi-tenant application built with Next.js 15, 
 
 ## Tech Stack
 
-- [Next.js 15](https://nextjs.org/) with App Router
+- [TanStack Start](https://tanstack.com/start) - Full-stack React framework
 - [React 19](https://react.dev/)
 - [Upstash Redis](https://upstash.com/) for data storage
 - [Tailwind 4](https://tailwindcss.com/) for styling
@@ -34,8 +34,8 @@ A production-ready example of a multi-tenant application built with Next.js 15, 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/vercel/platforms.git
-   cd platforms
+   git clone https://github.com/xiaoyu2er/tanstack-start-multi-tenant-vercel-template.git
+   cd tanstack-start-multi-tenant-vercel-template
    ```
 
 2. Install dependencies:
@@ -45,11 +45,18 @@ A production-ready example of a multi-tenant application built with Next.js 15, 
    ```
 
 3. Set up environment variables:
-   Create a `.env.local` file in the root directory with:
+   Copy the example environment file and fill in your values:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Then edit `.env` with your values:
 
    ```
    KV_REST_API_URL=your_redis_url
    KV_REST_API_TOKEN=your_redis_token
+   VITE_ROOT_DOMAIN=localhost:3000
    ```
 
 4. Start the development server:
@@ -68,12 +75,12 @@ A production-ready example of a multi-tenant application built with Next.js 15, 
 This application demonstrates a subdomain-based multi-tenant architecture where:
 
 - Each tenant gets their own subdomain (`tenant.yourdomain.com`)
-- The middleware handles routing requests to the correct tenant
+- TanStack Start routes handle subdomain detection and tenant-specific content
 - Tenant data is stored in Redis using a `subdomain:{name}` key pattern
 - The main domain hosts the landing page and admin interface
 - Subdomains are dynamically mapped to tenant-specific content
 
-The middleware (`middleware.ts`) intelligently detects subdomains across various environments (local development, production, and Vercel preview deployments).
+The application intelligently detects subdomains across various environments (local development, production, and Vercel preview deployments).
 
 ## Deployment
 
