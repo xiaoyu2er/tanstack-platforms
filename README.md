@@ -38,8 +38,8 @@ Experience the multi-tenant functionality at [multi-domain.learnjs.eu.org](https
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/xiaoyu2er/tanstack-start-multi-tenant-vercel-template.git
-   cd tanstack-start-multi-tenant-vercel-template
+   git clone https://github.com/xiaoyu2er/tanstack-platforms.git
+   cd tanstack-platforms
    ```
 
 2. Install dependencies:
